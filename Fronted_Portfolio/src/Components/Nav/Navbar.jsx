@@ -1,7 +1,7 @@
 import { ChevronUp } from "lucide-react";
 import { useState } from "react";
 import dayjs from "dayjs";
-import { nav_btn, icons, iconMap } from "../../constants/Index.jsx";
+import { icons, iconMap } from "../../constants/Index.jsx";
 
 const Navbar = () => {
   const [footerOpen, setFooterOpen] = useState(false);
@@ -11,9 +11,7 @@ const Navbar = () => {
       <div
         className={`fixed left-0 w-full bg-white/50 backdrop-blur-3xl
     transition-all duration-500 ease-in-out z-0
-    ${
-      footerOpen ? "translate-y-0 opacity-100" : "translate-y-full opacity-00"
-    }`}
+    ${footerOpen ? "translate-y-0 opacity-100" : "translate-y-full opacity-00"}`}
         style={{ bottom: "40px", height: "256px" }}
       >
         <div
@@ -42,9 +40,7 @@ const Navbar = () => {
       >
         <div className="flex items-center gap-2">
           <img src="web_logo.png" alt="logo" className="w-7 h-7" />
-          <p className="font-semibold text-sm tracking-wide">
-            Dipesh's Portfolio
-          </p>
+          <p className="font-semibold text-sm tracking-wide">Dipesh's Portfolio</p>
         </div>
 
         <div className="flex items-center gap-2">
@@ -61,13 +57,9 @@ const Navbar = () => {
             );
           })}
 
-          <div className="ml-4 flex flex-col items-end leading-tight hover:bg-gray-100 p-1 rounded-md cursor-pointer transition">
-            <p className="text-xs font-semibold text-black/80">
-              {dayjs().format("h:mm A")}
-            </p>
-            <p className="text-[10px] text-black/60">
-              {dayjs().format("ddd, MMM D")}
-            </p>
+          <div className="ml-4 flex flex-col items-end leading-tight hover:bg-white-100 p-1 rounded-md cursor-pointer transition">
+            <p className="text-xs font-semibold text-black/80">{dayjs().format("h:mm A")}</p>
+            <p className="text-[10px] text-black/60">{dayjs().format("ddd, MMM D")}</p>
           </div>
         </div>
       </nav>

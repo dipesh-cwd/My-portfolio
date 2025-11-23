@@ -13,9 +13,9 @@ const iconMap = {
   Lightbulb: Lightbulb,
 };
 const icons = [
-    { id: 2, icon: "Search" },
+  { id: 2, icon: "Search" },
   { id: 3, icon: "Wifi" },
-  
+
   { id: 4, icon: "Earth" },
   { id: 5, icon: "User" },
   { id: 6, icon: "Lightbulb" },
