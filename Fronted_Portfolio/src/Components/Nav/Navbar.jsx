@@ -50,14 +50,14 @@ const Navbar = () => {
               <div
                 key={id}
                 className="p-2 rounded-full  transition-all
-                 hover:shadow-md hover:scale-120 duration-200 cursor-pointer"
+                 hover:shadow-md hover:scale-120 hover:bg-gray-100/50 duration-200 cursor-pointer "
               >
                 <IconComponent className="w-3.5 h-3.5 text-black" />
               </div>
             );
           })}
 
-          <div className="ml-4 flex flex-col items-end leading-tight hover:bg-white-100 p-1 rounded-md cursor-pointer transition">
+          <div className="ml-4 flex flex-col items-end leading-tight hover:bg-gray-100 p-1 rounded-md cursor-pointer transition">
             <p className="text-xs font-semibold text-black/80">{dayjs().format("h:mm A")}</p>
             <p className="text-[10px] text-black/60">{dayjs().format("ddd, MMM D")}</p>
           </div>
