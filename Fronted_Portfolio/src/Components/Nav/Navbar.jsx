@@ -1,10 +1,19 @@
 import { ChevronUp } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { icons, iconMap } from "../../constants/Index.jsx";
-
 const Navbar = () => {
   const [footerOpen, setFooterOpen] = useState(false);
+
+  const [now, setNow] = useState(dayjs());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(dayjs()); // update the time every second
+    }, 1000); // 1000ms = 1 second
+
+    return () => clearInterval(interval); // cleanup on unmount
+  }, []);
 
   return (
     <>
@@ -58,8 +67,8 @@ const Navbar = () => {
           })}
 
           <div className="ml-4 flex flex-col items-end leading-tight hover:bg-gray-100 p-1 rounded-md cursor-pointer transition">
-            <p className="text-xs font-semibold text-black/80">{dayjs().format("h:mm A")}</p>
-            <p className="text-[10px] text-black/60">{dayjs().format("ddd, MMM D")}</p>
+            <p className="text-xs font-semibold text-black/80">{now.format("h:mm A")}</p>
+            <p className="text-[10px] text-black/60">{now.format("ddd, MMM D")}</p>
           </div>
         </div>
       </nav>
