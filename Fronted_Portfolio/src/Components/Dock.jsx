@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { Tooltip } from "react-tooltip";
 import { dockApps } from "../constants/Index.jsx";
@@ -61,10 +59,7 @@ const Dock = () => {
     <section id="dock">
       <div className="dock-container flex flex-row items-end gap-4 justify-center" ref={dockRef}>
         {dockApps.map(({ id, name, icon, canOpen }) => (
-          <div
-            key={id}
-            className="relative flex justify-items-center duration-200 cursor-pointer"
-          >
+          <div key={id} className="relative flex justify-items-center duration-200 cursor-pointer"          >
             <button
               type="button"
               className="dock-icon  w-7 h-7 object-contain cursor-pointer"
