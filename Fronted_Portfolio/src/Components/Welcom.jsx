@@ -1,14 +1,11 @@
-
-
 import LiquidMagneticTitle from "./LiquidMagneticTitle";
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
-
 const FONT_WEIGHTS = {
-  title: { MIN: 100, MAX: 900, default: 100 },
-  subtitle: { MIN: 400, MAX: 900, default: 400 },
+  title: { MIN: 400, MAX: 900, default: 400 },
+  subtitle: { MIN: 100, MAX: 900, default: 100 },
 };
 
 const renderText = (text, className, baseWeight = 400) => {
@@ -16,7 +13,6 @@ const renderText = (text, className, baseWeight = 400) => {
     <span
       key={i}
       className={className + " char"}
-
       style={{
         fontVariationSettings: `"wght" ${baseWeight}`,
         display: "inline-block",
@@ -120,17 +116,17 @@ const Welcome = () => {
           radius={null}
           className="text-georama"
         />*/}
-      </div> 
+      </div>
 
       <h1 ref={titleRef} className="mt-6 cursor-pointer text-georama  text-6xl md:text-9xl italic">
-        {renderText("Portfolio", "text-georama", FONT_WEIGHTS.title.default)}
+        {/* {renderText("Portfolio", "text-georama", FONT_WEIGHTS.title.default)} */}
 
-        {/* <LiquidMagneticTitle
+        <LiquidMagneticTitle
           text="Portfolio"
           intensity={1.8}
           radius={null}
           className="text-georama"
-        /> */}
+        />
       </h1>
 
       <div className="hidden md:block mt-6">

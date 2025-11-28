@@ -21,4 +21,14 @@ const icons = [
   { id: 6, icon: "Lightbulb" },
 ];
 
-export { nav_btn, icons, iconMap };
+const dockApps = [
+  { id: "Portfolio", name: "Portfolio", icon: "portfolio.png", canOpen: true },
+  { id: "photos", name: "Gallery", icon: "gallery.png", canOpen: true },
+  { id: "contact", name: "Contact", icon: "contact.png", canOpen: true },
+  { id: "skill", name: "Skill", icon: "skill.png", canOpen: true },
+  { id: "education", name: "Education", icon: "education.png", canOpen: true },
+  { id: "cv", name: "CV", icon: "cv.png", canOpen: true },
+  { id: "archive", name: "Archive", icon: "archive.png", canOpen: true },
+];
+
+export {dockApps, nav_btn, icons, iconMap };
