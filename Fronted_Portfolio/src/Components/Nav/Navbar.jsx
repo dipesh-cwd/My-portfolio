@@ -2,6 +2,7 @@ import { ChevronUp } from "lucide-react";
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { icons, iconMap } from "../../constants/Index.jsx";
+import Dock from "../Dock.jsx";
 const Navbar = () => {
   const [footerOpen, setFooterOpen] = useState(false);
 
@@ -50,6 +51,10 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           <img src="web_logo.png" alt="logo" className="w-7 h-7" />
           <p className="font-semibold text-sm tracking-wide">Dipesh's Portfolio</p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Dock />
         </div>
 
         <div className="flex items-center gap-2">
