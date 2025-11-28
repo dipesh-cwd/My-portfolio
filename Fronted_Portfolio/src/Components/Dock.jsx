@@ -63,8 +63,7 @@ const Dock = () => {
         {dockApps.map(({ id, name, icon, canOpen }) => (
           <div
             key={id}
-            className="relative flex justify-items-center
-            duration-200 cursor-pointer"
+            className="relative flex justify-items-centerduration-200 cursor-pointer"
           >
             <button
               type="button"
