@@ -106,7 +106,7 @@ const Welcome = () => {
       <div ref={subtitleRef} className="cursor-pointer text-georama text-3xl md:text-4xl ">
         {renderText(
           "Hallo, ich bin Dipesh! Willkommen zu meinem",
-          "text-georama ",
+          "text-georama",
           FONT_WEIGHTS.subtitle.default
         )}
 

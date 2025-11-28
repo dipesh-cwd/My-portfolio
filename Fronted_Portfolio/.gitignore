@@ -41,13 +41,3 @@ Thumbs.db
 *.njsproj
 *.sln
 *.sw?
-
-
-.env
-.env.local
-.env.production
-.vite/
-.cache/
-node_modules/
-dist/
-dist-ssr/

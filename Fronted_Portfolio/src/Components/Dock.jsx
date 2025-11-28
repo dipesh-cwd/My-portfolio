@@ -64,7 +64,6 @@ const Dock = () => {
           <div
             key={id}
             className="relative flex justify-items-center
-             
             duration-200 cursor-pointer"
           >
             <button
