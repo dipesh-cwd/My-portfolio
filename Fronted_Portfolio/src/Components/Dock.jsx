@@ -3,9 +3,11 @@ import { Tooltip } from "react-tooltip";
 import { dockApps } from "../constants/Index.jsx";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import useWindowStore from "../store/window.js";
 
 const Dock = () => {
   const dockRef = React.useRef(null);
+  const {openWindow, closeWindow, windows } = useWindowStore();
 
   useGSAP(() => {
     const dock = dockRef.current;
@@ -52,14 +54,28 @@ const Dock = () => {
   }, []);
 
   const toggleapp = (app) => {
-    console.log(`Opening ${app} application`);
+ 
+    if (!app.canOpen) return;
+    const window = windows[app.id];
+    if (!window) {
+      
+      return;
+    }
+  
+    if (window.isOpen) {
+     
+      closeWindow(app.id);
+    } else {
+      openWindow(app.id);
+    }
+    console.log(windows);
   };
 
   return (
     <section id="dock">
       <div className="dock-container flex flex-row items-end gap-4 justify-center" ref={dockRef}>
         {dockApps.map(({ id, name, icon, canOpen }) => (
-          <div key={id} className="relative flex justify-items-center duration-200 cursor-pointer"          >
+          <div key={id} className="relative flex justify-items-center duration-200 cursor-pointer" onClick={() => toggleapp({ id, canOpen })}>
             <button
               type="button"
               className="dock-icon  w-7 h-7 object-contain cursor-pointer"
@@ -68,7 +84,7 @@ const Dock = () => {
               data-tooltip-content={name}
               data-tooltip-delay-show={150}
               disabled={!canOpen}
-              onClick={() => toggleapp(id, canOpen)}
+              
             >
               <img
                 src={`/${icon}`}

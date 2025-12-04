@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
 html,
 body {
   width: 100%;
@@ -15,7 +26,7 @@ body {
 
 @font-face {
   font-family: "Georama";
-  src: url("/fonts/Georama-VariableFont_wdth,wght.ttf") format("truetype"); /* in public/fonts */
+  src: url("/fonts/Georama-VariableFont_wdth,wght.ttf") format("truetype"); 
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -69,3 +80,6 @@ body {
   opacity: 0;
   transform: translateY(0px);
 }
+
+
+
