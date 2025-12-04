@@ -12,16 +12,19 @@ const MIN_HEIGHT = FIXED_MIN_HEIGHT;
 const WindowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
     const { windows, focusWindow, setWindowState, toggleMaximize } = useWindowStore();
+    const win = windows?.[windowKey];
+
+    if (!win) {
+      console.warn("WindowWrapper: no window config for", windowKey);
+      return null;
+    }
+
+    const { isOpen, zIndex, x, y, width, height, isMaximized } = win;
 
     const rootRef = useRef(null);
     const draggableRef = useRef(null);
 
     useLayoutEffect(() => {
-      const win = windows?.[windowKey];
-
-      if (!win) return;
-
-      const { isOpen, zIndex, x, y, width, height } = win;
       const el = rootRef.current;
       if (!el) return;
       const w = Math.max(MIN_WIDTH, width ?? 650);
@@ -36,18 +39,16 @@ const WindowWrapper = (Component, windowKey) => {
       el.style.display = isOpen ? "block" : "none";
 
       gsap.set(el, { x: 0, y: 0 });
-    }, [windows]);
+    }, [x, y, width, height, zIndex, isOpen]);
 
     useEffect(() => {
-      const win = windows?.[windowKey];
-
-      if (!win) return;
-      const { isOpen, isMaximized } = win;
       const el = rootRef.current;
       if (!el || !isOpen || isMaximized) return;
 
       const handle = el.querySelector("[data-drag-handle]");
-      if (!handle) return;
+      if (!handle) {
+        return;
+      }
 
       if (draggableRef.current) {
         draggableRef.current.kill();
@@ -96,19 +97,11 @@ const WindowWrapper = (Component, windowKey) => {
         try {
           draggableRef.current?.kill();
           draggableRef.current = null;
-        } catch (e) {
-          console.log(e);
-        }
+        } catch (_) {}
       };
-    }, [windows, focusWindow, setWindowState]);
+    }, [isOpen, isMaximized, focusWindow, setWindowState, windowKey]);
 
     useEffect(() => {
-      const win = windows?.[windowKey];
-
-      if (!win) return;
-
-      const { isMaximized } = win;
-
       const el = rootRef.current;
       if (!el || isMaximized) return;
 
@@ -203,21 +196,15 @@ const WindowWrapper = (Component, windowKey) => {
         window.removeEventListener("mousemove", onMouseMove);
         window.removeEventListener("mouseup", onMouseUp);
       };
-    }, [setWindowState, windows]);
+    }, [isMaximized, setWindowState, windowKey]);
 
     const onTitleDoubleClick = useCallback(
       (e) => {
         e?.preventDefault?.();
         toggleMaximize(windowKey);
       },
-      [toggleMaximize]
+      [toggleMaximize, windowKey]
     );
-
-    const win = windows?.[windowKey];
-
-    if (!win) return;
-
-    const { isMaximized } = win;
 
     return (
       <section
