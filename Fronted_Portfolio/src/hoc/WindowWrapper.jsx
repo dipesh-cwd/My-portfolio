@@ -174,9 +174,9 @@ const WindowWrapper = (Component, windowKey) => {
 
 
         if (state.dir.includes("top")) {
-           const clampedWidth = Math.max(MIN_HEIGHT, Math.round(state.startHeight - dy));
-          newTop = state.startTop+(state.startHeight- clampedWidth);
-          newHeight = clampedWidth;
+           const clampedHeight = Math.max(MIN_HEIGHT, Math.round(state.startHeight - dy));
+          newTop = state.startTop+(state.startHeight- clampedHeight);
+          newHeight = clampedHeight;
         }
 
         el.style.width = `${newWidth}px`;
