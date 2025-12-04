@@ -100,9 +100,9 @@ const WindowWrapper = (Component, windowKey) => {
         try {
           draggableRef.current?.kill();
           draggableRef.current = null;
-        } catch (_) {}
+        } catch (win) {console.log(win)}
       };
-    }, [isOpen, isMaximized, focusWindow, setWindowState, windowKey]);
+    }, [isOpen, isMaximized, focusWindow, setWindowState]);
 
     useEffect(() => {
       const el = rootRef.current;
@@ -206,14 +206,14 @@ const WindowWrapper = (Component, windowKey) => {
         window.removeEventListener("mousemove", onMouseMove);
         window.removeEventListener("mouseup", onMouseUp);
       };
-    }, [isMaximized, setWindowState, windowKey]);
+    }, [isMaximized, setWindowState]);
 
     const onTitleDoubleClick = useCallback(
       (e) => {
         e?.preventDefault?.();
         toggleMaximize(windowKey);
       },
-      [toggleMaximize, windowKey]
+      [toggleMaximize]
     );
 
 

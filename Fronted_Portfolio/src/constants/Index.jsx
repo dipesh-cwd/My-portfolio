@@ -31,85 +31,125 @@ const dockApps = [
   { id: "archive", name: "Archive", icon: "archive.png", canOpen: true },
 ];
 
-
-
-
-
 const INITIAL_Z_INDEX = 1000;
 const FIXED_MIN_WIDTH = 440;
 const FIXED_MIN_HEIGHT = 360;
 
 const WINDOW_CONFIG = {
-  portfolio: { isOpen : false, zIndex: INITIAL_Z_INDEX, data:null },
-  photos: { isOpen : false, zIndex: INITIAL_Z_INDEX, data:null },
-  contact: { isOpen : false, zIndex: INITIAL_Z_INDEX, data:null },
-
-
-
-
-
-
-
-
-  // skill: { isOpen : false, zIndex: INITIAL_Z_INDEX, data:null },
-
-
-skill: {
+  contact: {
     isOpen: false,
     zIndex: INITIAL_Z_INDEX,
-    x: null,   
+    x: null,
     y: null,
     width: 650,
     height: 420,
     isMaximized: false,
     prev: null,
-    data: null
+    data: null,
+  },
+  photos: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  portfolio: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  skill: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  education: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  cv: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
   },
 
-
-
-
-
-
-
-
-
-
-
-  education: { isOpen : false, zIndex: INITIAL_Z_INDEX, data:null },
-  cv: { isOpen : false, zIndex: INITIAL_Z_INDEX, data:null },
-  archive: { isOpen : false, zIndex: INITIAL_Z_INDEX, data:null },
-};  
-
-
-
+  archive: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+};
 
 const techStack = [
   {
-    category: "Frontend", 
-    items : ["HTML", "JavaScript", "React.js"]
-  },
-  
-  {
-    category: "Backend", 
-    items : ["Node.js", "Express.js"]
+    category: "Frontend",
+    items: ["HTML", "JavaScript", "React.js"],
   },
 
   {
-    category: "Database", 
-    items : ["MongoDB", "MySQL"]
+    category: "Backend",
+    items: ["Node.js", "Express.js"],
   },
 
   {
-    category: "Version Control", 
-    items : ["Git", "GitHub"]
-  },  
+    category: "Database",
+    items: ["MongoDB", "MySQL"],
+  },
+
   {
-    category: "Styling", 
-    items : ["CSS", "Tailwind CSS"]
-  },  
+    category: "Version Control",
+    items: ["Git", "GitHub"],
+  },
+  {
+    category: "Styling",
+    items: ["CSS", "Tailwind CSS"],
+  },
 ];
 
-
-
-export {dockApps, nav_btn, icons, iconMap, WINDOW_CONFIG, INITIAL_Z_INDEX,techStack,FIXED_MIN_WIDTH,FIXED_MIN_HEIGHT};
+export {
+  dockApps,
+  nav_btn,
+  icons,
+  iconMap,
+  WINDOW_CONFIG,
+  INITIAL_Z_INDEX,
+  techStack,
+  FIXED_MIN_WIDTH,
+  FIXED_MIN_HEIGHT,
+};

@@ -13,10 +13,11 @@ export const useWindowStore = create(
         const win = state.windows[windowKey];
         if (!win) return;
 
-        if (win.x === null && win.width) {
+        if (win.x === null && win.width && typeof window !== "undefined") {
           win.x = window.innerWidth / 2 - win.width / 2;
         }
-        if (win.y === null && win.height) {
+
+        if (win.y === null && win.height && typeof window !== "undefined") {
           win.y = window.innerHeight / 2 - win.height / 2;
         }
 
@@ -53,6 +54,8 @@ export const useWindowStore = create(
       set((state) => {
         const win = state.windows[windowKey];
         if (!win) return;
+        if(typeof window === 'undefined') return;
+        
         if (!win.isMaximized) {
           win.prev = {
             x: win.x,
