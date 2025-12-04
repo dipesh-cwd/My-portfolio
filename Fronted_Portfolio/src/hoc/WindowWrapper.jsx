@@ -13,16 +13,19 @@ const WindowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
     const { windows, focusWindow, setWindowState, toggleMaximize } = useWindowStore();
     const win = windows?.[windowKey];
-
-    if (!win) {
-      console.warn("WindowWrapper: no window config for", windowKey);
-      return null;
-    }
-
     const { isOpen, zIndex, x, y, width, height, isMaximized } = win;
+
+    
 
     const rootRef = useRef(null);
     const draggableRef = useRef(null);
+
+
+
+
+   
+
+    
 
     useLayoutEffect(() => {
       const el = rootRef.current;
@@ -151,22 +154,29 @@ const WindowWrapper = (Component, windowKey) => {
         let newWidth = state.startWidth;
         let newHeight = state.startHeight;
 
+
+
         if (state.dir.includes("right")) {
           newWidth = Math.max(MIN_WIDTH, Math.round(state.startWidth + dx));
         }
 
         if (state.dir.includes("left")) {
-          newWidth = Math.max(MIN_WIDTH, Math.round(state.startWidth - dx));
-          newLeft = Math.round(state.startLeft + dx);
+          const clampedWidth = Math.max(MIN_WIDTH, Math.round(state.startWidth - dx));
+          newLeft = state.startLeft+(state.startWidth- clampedWidth);
+          newWidth = clampedWidth;
         }
 
         if (state.dir.includes("bottom")) {
           newHeight = Math.max(MIN_HEIGHT, Math.round(state.startHeight + dy));
         }
 
+
+
+
         if (state.dir.includes("top")) {
-          newHeight = Math.max(MIN_HEIGHT, Math.round(state.startHeight - dy));
-          newTop = Math.round(state.startTop + dy);
+           const clampedWidth = Math.max(MIN_HEIGHT, Math.round(state.startHeight - dy));
+          newTop = state.startTop+(state.startHeight- clampedWidth);
+          newHeight = clampedWidth;
         }
 
         el.style.width = `${newWidth}px`;
@@ -205,6 +215,13 @@ const WindowWrapper = (Component, windowKey) => {
       },
       [toggleMaximize, windowKey]
     );
+
+
+
+     if (!win) {
+      console.warn("WindowWrapper: no window config for", windowKey);
+      return null;
+    }
 
     return (
       <section

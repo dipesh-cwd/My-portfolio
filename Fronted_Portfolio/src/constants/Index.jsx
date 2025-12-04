@@ -57,8 +57,8 @@ const WINDOW_CONFIG = {
 skill: {
     isOpen: false,
     zIndex: INITIAL_Z_INDEX,
-    x: window.innerWidth / 2 - 325,   
-    y: window.innerHeight / 2 - 210,
+    x: null,   
+    y: null,
     width: 650,
     height: 420,
     isMaximized: false,

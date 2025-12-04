@@ -7,7 +7,7 @@ const WindowControles = ({ target }) => {
   const win = windows[target];
 
   return (
-    <div className="flex tems-center space-x-1 ">
+    <div className="flex items-center space-x-1 ">
       <button
         className="w-10 h-6 flex items-center justify-center text-gray-300 hover:bg-[#2a2a2a] rounded-sm cursor-pointer"
         onClick={() => closeWindow(target)}
@@ -18,7 +18,7 @@ const WindowControles = ({ target }) => {
         className="w-10 h-6 flex items-center justify-center text-gray-300 hover:bg-[#2a2a2a] rounded-sm cursor-pointer"
         onClick={() => {
           focusWindow(target);
-          toggleMaximize("skill");
+          toggleMaximize(target);
         }}
       >
         {win?.isMaximized ? "❐" : "▢"}
