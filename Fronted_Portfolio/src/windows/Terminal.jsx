@@ -6,10 +6,11 @@ import WindowControles from "../Components/WindowControles.jsx";
 const Terminal = (props) => {
   return (
     <>
-      <div 
-      
-      data-drag-handle
-      className=" titlebar no-scrollbar flex justify-between items-center px-4 py-2 bg-[#1f1f1f] border-b border-gray-700 select-none cursor-grab"   onDoubleClick={props.onTitleDoubleClick}>
+      <div
+        data-drag-handle
+        className=" titlebar no-scrollbar flex justify-between items-center px-4 py-2 bg-[#1f1f1f] border-b border-gray-700 select-none cursor-grab"
+        onDoubleClick={props.onTitleDoubleClick}
+      >
         <h2 className="text-sm">C:\Users\dipesh\TechStack</h2>
 
         <WindowControles target="skill" />

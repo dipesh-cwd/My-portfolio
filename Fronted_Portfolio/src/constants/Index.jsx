@@ -23,12 +23,107 @@ const icons = [
 
 const dockApps = [
   { id: "portfolio", name: "Portfolio", icon: "portfolio.png", canOpen: true },
-  { id: "photos", name: "Gallery", icon: "gallery.png", canOpen: true },
+  { id: "photos", name: "Gallery", icon: "gallery2.png", canOpen: true },
   { id: "contact", name: "Contact", icon: "contact.png", canOpen: true },
   { id: "skill", name: "Skill", icon: "cmd.png", canOpen: true },
   { id: "education", name: "Education", icon: "education.png", canOpen: true },
   { id: "cv", name: "CV", icon: "cv.png", canOpen: true },
   { id: "archive", name: "Archive", icon: "archive.png", canOpen: true },
+];
+
+const dummyImages = [
+  {
+    id: "image1",
+    name: "image1.jpg",
+    src: "image1.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
+  {
+    id: "image2",
+    name: "image2.jpg",
+    src: "image2.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
+  {
+    id: "image3",
+    name: "image3.jpg",
+    src: "image3.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
+  {
+    id: "image4",
+    name: "image4.jpg",
+    src: "image4.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
+  {
+    id: "image5",
+    name: "image5.jpg",
+    src: "image5.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
+  {
+    id: "image6",
+    name: "image6.jpg",
+    src: "image6.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
+  {
+    id: "image7",
+    name: "image7.jpg",
+    src: "image7.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
+  {
+    id: "image8",
+    name: "image8.jpg",
+    src: "image8.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
+
+  {
+    id: "image9",
+    name: "image9.jpg",
+    src: "image9.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
+
+  {
+    id: "image10",
+    name: "image10.jpg",
+    src: "image10.jpg",
+    size: "2.1 MB",
+    dateModified: "2025-12-01",
+    description: "This is my image.",
+    canOpen: true,
+  },
 ];
 
 const INITIAL_Z_INDEX = 1000;
@@ -48,6 +143,17 @@ const WINDOW_CONFIG = {
     data: null,
   },
   photos: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  viwer: {
     isOpen: false,
     zIndex: INITIAL_Z_INDEX,
     x: null,
@@ -116,6 +222,122 @@ const WINDOW_CONFIG = {
   },
 };
 
+const IMAGE_CONFIG = {
+  image1: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  image2: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  image3: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  image4: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  image5: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  image6: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+  image7: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+
+  image8: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+
+  image9: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+
+  image10: {
+    isOpen: false,
+    zIndex: INITIAL_Z_INDEX,
+    x: null,
+    y: null,
+    width: 650,
+    height: 420,
+    isMaximized: false,
+    prev: null,
+    data: null,
+  },
+};
+
 const techStack = [
   {
     category: "Frontend",
@@ -142,6 +364,8 @@ const techStack = [
   },
 ];
 
+// dummyImages.js
+
 export {
   dockApps,
   nav_btn,
@@ -152,4 +376,6 @@ export {
   techStack,
   FIXED_MIN_WIDTH,
   FIXED_MIN_HEIGHT,
+  dummyImages,
+  IMAGE_CONFIG,
 };

@@ -10,35 +10,32 @@ const Navbar = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setNow(dayjs()); // update the time every second
-    }, 1000); // 1000ms = 1 second
+      setNow(dayjs());
+    }, 1000);
 
-    return () => clearInterval(interval); // cleanup on unmount
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <>
       <div
         className={`fixed left-0 w-full bg-white/50 backdrop-blur-3xl
-    transition-all duration-500 ease-in-out z-0
+    transition-all duration-500 ease-in-out z-10
     ${footerOpen ? "translate-y-0 opacity-100" : "translate-y-full opacity-00"}`}
         style={{ bottom: "40px", height: "256px" }}
       >
         <div
           onClick={() => setFooterOpen((p) => !p)}
-          className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-3/3 z-0
-    px-5 rounded-t-xl cursor-pointer select-none bg-white/50 backdrop-blur-3xl 
-    hover:bg-white/65
-    transition-all ease-in-out duration-200 hover:scale-105"
+          className="absolute left-1/2 top-0 transform -translate-x-1/2 -translate-y-3/3 px-5 rounded-t-xl cursor-pointer select-none bg-white/7y0 backdrop-blur-3xl hover:bg-white/65 transition-all ease-in-out duration-200 hover:scale-105  bg-white/50"
         >
           <div
-            className={`transform transition-transform duration-300 ${
+            className={`transform transition-transform duration-300  ${
               footerOpen ? "rotate-180" : "rotate-0"
             }`}
           >
             <ChevronUp
               size={20}
-              className="text-black/70 transition-colors duration-200 hover:text-black/90"
+              className="text-black/70 transition-colors duration-200 hover:text-black/90 z-1000"
             />
           </div>
         </div>

@@ -129,7 +129,7 @@ const Welcome = () => {
         />
       </h1>
 
-      <div className="hidden md:block mt-6">
+      <div className="hidden min :block mt-6">
         <p>This Portfolio is designed for desktop and tab only.</p>
       </div>
     </section>

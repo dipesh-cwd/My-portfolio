@@ -1,7 +1,7 @@
-import React, { useEffect, useLayoutEffect, useRef, useCallback } from "react";
+import React, { useLayoutEffect, useRef, useEffect, useCallback } from "react";
 import { gsap } from "gsap";
 import { Draggable } from "gsap/Draggable";
-import useWindowStore from "../store/window.js";
+import { useImageStore } from "../store/window.js";
 import { FIXED_MIN_HEIGHT, FIXED_MIN_WIDTH } from "../constants/Index.jsx";
 
 gsap.registerPlugin(Draggable);
@@ -9,15 +9,22 @@ gsap.registerPlugin(Draggable);
 const MIN_WIDTH = FIXED_MIN_WIDTH;
 const MIN_HEIGHT = FIXED_MIN_HEIGHT;
 
-const WindowWrapper = (Component, windowKey) => {
-  const Wrapped = (props) => {
-    const { windows, focusWindow, setWindowState, toggleMaximize } = useWindowStore();
-    const win = windows?.[windowKey];
-    const { isOpen, zIndex, x, y, width, height, isMaximized } = win;
-
+const InstanceWindowWrapper = (Component) => {
+  const Wrapped = ({ instanceId, ...props }) => {
     const rootRef = useRef(null);
     const draggableRef = useRef(null);
+    const win = viewerInstances.find((v) => v.id === instanceId);
+    const {
+      viewerInstances,
+      focusViewerInstance,
+      setViewerInstanceState,
+      toggleViewerMaximize,
+      closeViewerInstance,
+    } = useImageStore();
 
+    const { x, y, width, height, zIndex, isOpen, isMaximized } = win;
+
+    // layout effect: set DOM sizing/pos
     useLayoutEffect(() => {
       const el = rootRef.current;
       if (!el) return;
@@ -32,20 +39,24 @@ const WindowWrapper = (Component, windowKey) => {
       el.style.zIndex = String(zIndex ?? 100);
       el.style.display = isOpen ? "block" : "none";
 
+      // reset transient GSAP transform so left/top reflect actual pos
       gsap.set(el, { x: 0, y: 0 });
     }, [x, y, width, height, zIndex, isOpen]);
 
+    // draggable
     useEffect(() => {
       const el = rootRef.current;
       if (!el || !isOpen || isMaximized) return;
-
       const handle = el.querySelector("[data-drag-handle]");
-      if (!handle) {
-        return;
-      }
+      if (!handle) return;
 
+      // kill any previous instance
       if (draggableRef.current) {
-        draggableRef.current.kill();
+        try {
+          draggableRef.current.kill();
+        } catch (e) {
+          console.log(e);
+        } // ignore
         draggableRef.current = null;
       }
 
@@ -56,19 +67,20 @@ const WindowWrapper = (Component, windowKey) => {
         edgeResistance: 0.85,
         bounds: document.body,
 
-        onPress: () => focusWindow(windowKey),
+        onPress: () => focusViewerInstance(instanceId),
 
         onDragEnd: function () {
           const rect = el.getBoundingClientRect();
-
           const newLeft = Math.round(rect.left);
           const newTop = Math.round(rect.top);
 
+          // commit final left/top to inline style so layout effect picks up
           el.style.left = `${newLeft}px`;
           el.style.top = `${newTop}px`;
 
-          setWindowState(windowKey, { x: newLeft, y: newTop });
+          setViewerInstanceState(instanceId, { x: newLeft, y: newTop });
 
+          // clear gsap transient transform
           gsap.set(el, { x: 0, y: 0 });
         },
 
@@ -79,8 +91,8 @@ const WindowWrapper = (Component, windowKey) => {
 
           el.style.left = `${newLeft}px`;
           el.style.top = `${newTop}px`;
+          setViewerInstanceState(instanceId, { x: newLeft, y: newTop });
 
-          setWindowState(windowKey, { x: newLeft, y: newTop });
           gsap.set(el, { x: 0, y: 0 });
         },
       })[0];
@@ -90,13 +102,14 @@ const WindowWrapper = (Component, windowKey) => {
       return () => {
         try {
           draggableRef.current?.kill();
-          draggableRef.current = null;
-        } catch (win) {
-          console.log(win);
+        } catch (err) {
+          console.log(err);
         }
+        draggableRef.current = null;
       };
-    }, [isOpen, isMaximized, focusWindow, setWindowState]);
+    }, [isOpen, isMaximized, focusViewerInstance, setViewerInstanceState, instanceId]);
 
+    // resize handlers (adapted from your original code)
     useEffect(() => {
       const el = rootRef.current;
       if (!el || isMaximized) return;
@@ -147,32 +160,34 @@ const WindowWrapper = (Component, windowKey) => {
         let newWidth = state.startWidth;
         let newHeight = state.startHeight;
 
+        // horizontal resizing
         if (state.dir.includes("right")) {
           newWidth = Math.max(MIN_WIDTH, Math.round(state.startWidth + dx));
         }
-
         if (state.dir.includes("left")) {
           const clampedWidth = Math.max(MIN_WIDTH, Math.round(state.startWidth - dx));
           newLeft = state.startLeft + (state.startWidth - clampedWidth);
           newWidth = clampedWidth;
         }
 
+        // vertical resizing
         if (state.dir.includes("bottom")) {
           newHeight = Math.max(MIN_HEIGHT, Math.round(state.startHeight + dy));
         }
-
         if (state.dir.includes("top")) {
           const clampedHeight = Math.max(MIN_HEIGHT, Math.round(state.startHeight - dy));
           newTop = state.startTop + (state.startHeight - clampedHeight);
           newHeight = clampedHeight;
         }
 
+        // apply
         el.style.width = `${newWidth}px`;
         el.style.height = `${newHeight}px`;
         el.style.left = `${newLeft}px`;
         el.style.top = `${newTop}px`;
 
-        setWindowState(windowKey, {
+        // persist to store so other consumers see updated geometry
+        setViewerInstanceState(instanceId, {
           x: newLeft,
           y: newTop,
           width: newWidth,
@@ -194,25 +209,22 @@ const WindowWrapper = (Component, windowKey) => {
         window.removeEventListener("mousemove", onMouseMove);
         window.removeEventListener("mouseup", onMouseUp);
       };
-    }, [isMaximized, setWindowState]);
+    }, [isMaximized, setViewerInstanceState, instanceId]);
 
     const onTitleDoubleClick = useCallback(
       (e) => {
         e?.preventDefault?.();
-        toggleMaximize(windowKey);
+        toggleViewerMaximize(instanceId);
       },
-      [toggleMaximize]
+      [toggleViewerMaximize, instanceId]
     );
 
-    if (!win) {
-      console.warn("WindowWrapper: no window config for", windowKey);
-      return null;
-    }
+    if (!win) return null;
 
     return (
       <section
         ref={rootRef}
-        aria-label={`window-${windowKey}`}
+        aria-label={`window-instance-${instanceId}`}
         className="bg-black text-white no-scrollbar rounded-md shadow-2xl border border-gray-800 overflow-hidden font-mono"
         style={{ touchAction: "none" }}
       >
@@ -253,13 +265,18 @@ const WindowWrapper = (Component, windowKey) => {
           </>
         )}
 
-        <Component {...props} onTitleDoubleClick={onTitleDoubleClick} />
+        <Component
+          {...props}
+          instanceId={instanceId}
+          onTitleDoubleClick={onTitleDoubleClick}
+          onClose={() => closeViewerInstance(instanceId)}
+        />
       </section>
     );
   };
 
-  Wrapped.displayName = `WindowWrapper(${Component.displayName || Component.name || "Component"})`;
+  Wrapped.displayName = `InstanceWindowWrapper(${Component.displayName || Component.name || "Component"})`;
   return Wrapped;
 };
 
-export default WindowWrapper;
+export default InstanceWindowWrapper;
