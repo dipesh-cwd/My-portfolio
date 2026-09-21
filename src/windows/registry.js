@@ -1,5 +1,10 @@
+import Archive from "./Archive.jsx";
+import Contact from "./Contact.jsx";
+import Cv from "./Cv.jsx";
+import Education from "./Education.jsx";
 import Gallery from "./Gallery.jsx";
 import ImageViewer from "./ImageViewer.jsx";
+import Projects from "./Projects.jsx";
 import Terminal from "./Terminal.jsx";
 
 /**
@@ -11,7 +16,12 @@ import Terminal from "./Terminal.jsx";
  * Every component receives { windowId, appKey, data }.
  */
 export const WINDOW_COMPONENTS = {
-  skill: Terminal,
+  portfolio: Projects,
   photos: Gallery,
+  contact: Contact,
+  skill: Terminal,
+  education: Education,
+  cv: Cv,
+  archive: Archive,
   viewer: ImageViewer,
 };

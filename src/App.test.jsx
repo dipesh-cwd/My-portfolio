@@ -1,6 +1,7 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import App from "./App.jsx";
+import { APPS } from "./config/apps.js";
 import { useWindowStore } from "./store/windowStore.js";
 
 const SKILL = "C:\\Users\\dipesh\\TechStack";
@@ -41,10 +42,17 @@ describe("desktop", () => {
     expect(dialog(SKILL)).toBeTruthy();
   });
 
-  it("apps without content yet open a placeholder instead of doing nothing", () => {
-    render(<App />);
-    fireEvent.click(dockButton("CV"));
-    expect(within(dialog("CV")).getByText(/under construction/i)).toBeTruthy();
+  it("an app with no registered component opens the placeholder instead of crashing", () => {
+    APPS.mystery = { title: "Mystery", width: 400, height: 300 };
+    try {
+      render(<App />);
+      act(() => {
+        useWindowStore.getState().openApp("mystery");
+      });
+      expect(within(dialog("Mystery")).getByText(/under construction/i)).toBeTruthy();
+    } finally {
+      delete APPS.mystery;
+    }
   });
 
   it("maximizes on title bar double-click", () => {

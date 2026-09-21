@@ -39,7 +39,9 @@ src/
   components/window/      WindowManager, WindowFrame (title bar, drag, resize), controls
   components/taskbar/     Taskbar, Dock, Clock
   components/desktop/     Welcome screen
-  data/                   Content as data (tech stack, gallery images)
+  data/                   Your content as data: profile, projects, education, experience,
+                          archive, tech stack, gallery images
+  lib/contact.js          Contact form validation + sending (mailto fallback / optional API)
 ```
 
 - A window exists in the store only while it is open. Single-instance apps use the app key as id
@@ -56,6 +58,28 @@ src/
 3. Register it in `src/windows/registry.js`.
 
 Apps without a registered component show a "under construction" placeholder.
+
+## Editing your content
+
+You never need to touch JSX to change what the windows show. Edit the files in `src/data/`:
+
+| File            | Used by                                 |
+| --------------- | --------------------------------------- |
+| `profile.js`    | Contact + CV (name, role, email, links) |
+| `projects.js`   | Portfolio window                        |
+| `education.js`  | Education + CV                          |
+| `experience.js` | CV                                      |
+| `archive.js`    | Archive window                          |
+| `techStack.js`  | Skill terminal + CV                     |
+| `gallery.js`    | Gallery + image viewer                  |
+
+Entries marked "Placeholder" are examples to replace.
+
+### Contact form
+
+Without a backend the form opens the visitor's email app with the message pre-filled. To send to an
+API instead, set `VITE_CONTACT_ENDPOINT` (see `.env.example`); the form then POSTs
+`{ name, email, message }` as JSON.
 
 ## Conventions
 

@@ -18,8 +18,10 @@ export const APPS = {
   portfolio: {
     title: "Portfolio",
     icon: "portfolio.png",
-    width: 720,
-    height: 480,
+    width: 760,
+    height: 520,
+    minWidth: 480,
+    minHeight: 360,
   },
   photos: {
     title: "Gallery",
@@ -34,7 +36,9 @@ export const APPS = {
     title: "Contact",
     icon: "contact.png",
     width: 560,
-    height: 420,
+    height: 540,
+    minWidth: 420,
+    minHeight: 460,
   },
   skill: {
     title: "Skill",
@@ -48,20 +52,26 @@ export const APPS = {
   education: {
     title: "Education",
     icon: "education.png",
-    width: 600,
-    height: 420,
+    width: 620,
+    height: 440,
+    minWidth: 420,
+    minHeight: 300,
   },
   cv: {
     title: "CV",
     icon: "cv.png",
-    width: 640,
-    height: 480,
+    width: 680,
+    height: 580,
+    minWidth: 480,
+    minHeight: 400,
   },
   archive: {
     title: "Archive",
     icon: "archive.png",
-    width: 600,
-    height: 420,
+    width: 620,
+    height: 440,
+    minWidth: 420,
+    minHeight: 300,
   },
 
   // Not in the dock: opened by the gallery, one window per image.

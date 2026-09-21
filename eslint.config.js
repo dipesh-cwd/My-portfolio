@@ -23,7 +23,8 @@ export default defineConfig([
       },
     },
     rules: {
-      "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]" }],
+      // Base ESLint can't see <Icon /> in JSX as a "use", so ignore capitalised names.
+      "no-unused-vars": ["error", { varsIgnorePattern: "^[A-Z_]", argsIgnorePattern: "^[A-Z_]" }],
     },
   },
   {
