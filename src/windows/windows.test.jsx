@@ -105,11 +105,18 @@ describe("Contact window", () => {
   };
   const submit = (win) => fireEvent.click(within(win).getByRole("button", { name: /send/i }));
 
-  it("shows the email and GitHub links, and hides LinkedIn while it is empty", () => {
+  it("shows the configured contact links", () => {
     const win = openApp("Contact");
+
     expect(hrefs(win)).toContain(`mailto:${profile.email}`);
     expect(hrefs(win)).toContain(profile.github);
-    expect(within(win).queryByText("LinkedIn")).toBeNull();
+
+    if (profile.linkedin) {
+      expect(hrefs(win)).toContain(profile.linkedin);
+      expect(within(win).getByText("LinkedIn")).toBeTruthy();
+    } else {
+      expect(within(win).queryByText("LinkedIn")).toBeNull();
+    }
   });
 
   it("blocks an empty submit and shows a message for each field", () => {

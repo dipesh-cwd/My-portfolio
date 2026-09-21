@@ -182,3 +182,28 @@ describe("toggleApp (dock click)", () => {
     expect(state().windows.skill.zIndex).toBeGreaterThan(state().windows.photos.zIndex);
   });
 });
+
+describe("minimizeAll / closeAll", () => {
+  it("minimizeAll hides every window but keeps them open", () => {
+    state().openApp("skill");
+    state().openApp("photos");
+    state().minimizeAll();
+    expect(Object.values(state().windows).every((w) => w.isMinimized)).toBe(true);
+    expect(Object.keys(state().windows)).toHaveLength(2);
+  });
+
+  it("closeAll removes every window, including multi-instance ones", () => {
+    state().openApp("skill");
+    state().openApp("viewer");
+    state().openApp("viewer");
+    state().closeAll();
+    expect(state().windows).toEqual({});
+  });
+
+  it("a window opened after closeAll works normally", () => {
+    state().openApp("skill");
+    state().closeAll();
+    state().openApp("skill");
+    expect(state().windows.skill.isMinimized).toBe(false);
+  });
+});

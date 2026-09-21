@@ -4,4 +4,15 @@ export const techStack = [
   { category: "Database", items: ["MongoDB", "MySQL"] },
   { category: "Version Control", items: ["Git", "GitHub"] },
   { category: "Styling", items: ["CSS", "Tailwind CSS"] },
+  { category: "Programming Languages ", items: ["C", "Java", "python"] },
+  {
+    category: "Soft Skill ",
+    items: [
+      "Communication",
+      "Problem-Solving & Critical Thinking",
+      "Adaptability",
+      "Team Collaboration",
+      "Time Management",
+    ],
+  },
 ];

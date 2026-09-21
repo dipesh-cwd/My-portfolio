@@ -1,5 +1,6 @@
 import { cleanup } from "@testing-library/react";
 import { afterEach, beforeEach } from "vitest";
+import { createInitialUiState, useUiStore } from "../store/uiStore.js";
 import { createInitialState, useWindowStore } from "../store/windowStore.js";
 
 // jsdom doesn't implement PointerEvent. Provide a minimal one so drag/resize can be tested.
@@ -18,6 +19,8 @@ beforeEach(() => {
   window.innerWidth = 1280;
   window.innerHeight = 800;
   useWindowStore.setState(createInitialState());
+  useUiStore.setState(createInitialUiState());
+  sessionStorage.clear();
 });
 
 afterEach(() => {

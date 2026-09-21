@@ -173,6 +173,17 @@ export const useWindowStore = create(
         }
       }),
 
+    /** "Show desktop": minimize every window (they can be restored from the panel or dock). */
+    minimizeAll: () =>
+      set((state) => {
+        for (const win of Object.values(state.windows)) win.isMinimized = true;
+      }),
+
+    closeAll: () =>
+      set((state) => {
+        state.windows = {};
+      }),
+
     /** Shallow-merge into a window's `data` (e.g. the image viewer changing image). */
     updateWindowData: (id, partial) =>
       set((state) => {

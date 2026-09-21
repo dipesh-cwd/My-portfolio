@@ -77,6 +77,7 @@ export const APPS = {
   // Not in the dock: opened by the gallery, one window per image.
   viewer: {
     title: "Image Viewer",
+    icon: "gallery2.png",
     getTitle: (data) => data?.images?.[data.index]?.name ?? "Image Viewer",
     width: 700,
     height: 500,

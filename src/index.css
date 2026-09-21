@@ -82,3 +82,16 @@ body {
   opacity: 0;
   transform: translateY(0px);
 }
+
+/* Start-up splash progress bar (see BootScreen.jsx; keep the duration in sync with SHOW_MS) */
+@keyframes boot-progress {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+.boot-bar {
+  animation: boot-progress 1.4s ease-out forwards;
+}

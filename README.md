@@ -34,11 +34,12 @@ src/
   config/apps.js          What apps exist (title, icon, default size, single/multi instance)
   config/layout.js        Shared numbers (taskbar height, z-index range, ...)
   store/windowStore.js    ONE Zustand store for every open window
+  store/uiStore.js        Which taskbar popup (Start menu / quick panel) is open
   windows/registry.js     Which component is shown inside which app's window
   windows/*.jsx           Window contents (Terminal, Gallery, ImageViewer, Placeholder)
   components/window/      WindowManager, WindowFrame (title bar, drag, resize), controls
-  components/taskbar/     Taskbar, Dock, Clock
-  components/desktop/     Welcome screen
+  components/taskbar/     Taskbar, Dock, Clock, StartMenu, QuickPanel (window switcher)
+  components/desktop/     Welcome screen, BootScreen (start-up splash, once per session)
   data/                   Your content as data: profile, projects, education, experience,
                           archive, tech stack, gallery images
   lib/contact.js          Contact form validation + sending (mailto fallback / optional API)

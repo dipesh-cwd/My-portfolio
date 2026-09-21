@@ -1,5 +1,8 @@
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 import { useRef } from "react";
 import { getWindowTitle } from "../../config/apps.js";
+import { prefersReducedMotion } from "../../lib/motion.js";
 import { useWindowStore } from "../../store/windowStore.js";
 import { WINDOW_COMPONENTS } from "../../windows/registry.js";
 import Placeholder from "../../windows/Placeholder.jsx";
@@ -29,6 +32,22 @@ const WindowFrame = ({ id }) => {
 
   const frameRef = useRef(null);
   const { startMove, startResize } = useWindowGestures(id, frameRef);
+
+  // Small "pop in" when a window opens (skipped for reduced-motion visitors).
+  useGSAP(
+    () => {
+      const el = frameRef.current;
+      if (!el || prefersReducedMotion()) return;
+      gsap.from(el, {
+        opacity: 0,
+        scale: 0.95,
+        duration: 0.18,
+        ease: "power2.out",
+        clearProps: "opacity,transform",
+      });
+    },
+    { dependencies: [] }
+  );
 
   if (!win) return null;
 
