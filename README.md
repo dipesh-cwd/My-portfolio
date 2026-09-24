@@ -78,8 +78,15 @@ You never need to touch JSX to change what the windows show. Edit the files in `
 | `archive.js`    | Archive window                          |
 | `techStack.js`  | Skill terminal + CV                     |
 | `gallery.js`    | Gallery + image viewer                  |
+| `me.js`         | Me window (bio + optional avatar photo) |
+| `timeline.js`   | Me window (life story, oldest first)    |
 
 Entries marked "Placeholder" are examples to replace.
+
+`timeline.js` entries can have zero or more `photos`; each opens in the same image viewer as
+the Gallery, scoped to that entry's own photos (its prev/next arrows only cycle through that
+entry, not the whole site). `me.js`'s `photo` can be `null` — the Me window then shows your
+initials instead of a broken image.
 
 This data is not translated — it's your own writing, kept as you wrote it in every language
 (see "Language" below for what IS translated).
@@ -134,6 +141,8 @@ headers) is ignored there.
 ### Before you publish
 
 - Replace every "Placeholder" in `src/data/` and set your real email in `profile.js`.
+- Write your real bio in `me.js` and your real life story in `timeline.js` (or delete entries
+  you don't want), and swap in real photos.
 - Edit the title/description in `index.html` and, if your name or tagline changed, replace
   `public/og-image.png` (1200x630) so link previews match.
 - Add your CV PDF to `public/` and set `cvFile` in `profile.js`.

@@ -111,11 +111,4 @@ describe("Settings window", () => {
 
     expect(usePreferencesStore.getState()).toMatchObject(defaultPreferences);
   });
-
-  it("an app with no content yet (Me) still opens as a placeholder", () => {
-    render(<App />);
-    fireEvent.click(dock("Me"));
-    const win = screen.getByRole("dialog", { name: "Me" });
-    expect(within(win).getByText(/under construction/i)).toBeTruthy();
-  });
 });

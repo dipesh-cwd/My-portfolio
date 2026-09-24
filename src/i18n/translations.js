@@ -100,6 +100,11 @@ const en = {
     linkLinkedin: "LinkedIn",
     linkEmail: "Email",
   },
+  me: {
+    subtitle: "A little about me, and my story so far.",
+    about: "About Me",
+    story: "My Story",
+  },
   mobile: {
     sections: "Sections",
   },
@@ -213,6 +218,11 @@ const np = {
     linkLinkedin: "लिंक्डइन",
     linkEmail: "इमेल",
   },
+  me: {
+    subtitle: "मेरो बारेमा अलिकति, र अहिलेसम्मको मेरो कथा।",
+    about: "मेरो बारेमा",
+    story: "मेरो कथा",
+  },
   mobile: {
     sections: "खण्डहरू",
   },
@@ -325,6 +335,11 @@ const de = {
     linkGithub: "GitHub",
     linkLinkedin: "LinkedIn",
     linkEmail: "E-Mail",
+  },
+  me: {
+    subtitle: "Ein bisschen über mich und meine Geschichte bis heute.",
+    about: "Über mich",
+    story: "Meine Geschichte",
   },
   mobile: {
     sections: "Bereiche",
