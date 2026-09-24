@@ -1,6 +1,7 @@
 import { Earth, Lightbulb, Search, User, Wifi } from "lucide-react";
 import { useCallback, useMemo, useRef } from "react";
 import { profile } from "../../data/profile.js";
+import { useTranslation } from "../../i18n/index.js";
 import { asset } from "../../lib/assets.js";
 import { useUiStore } from "../../store/uiStore.js";
 import Clock from "./Clock.jsx";
@@ -13,6 +14,7 @@ import { useDismiss } from "./useDismiss.js";
 const TRAY_ICONS = [Search, Wifi, Earth, User, Lightbulb];
 
 const Taskbar = () => {
+  const t = useTranslation();
   const startOpen = useUiStore((s) => s.startOpen);
   const panelOpen = useUiStore((s) => s.panelOpen);
   const toggleStart = useUiStore((s) => s.toggleStart);
@@ -46,7 +48,7 @@ const Taskbar = () => {
         <button
           ref={startButtonRef}
           type="button"
-          aria-label="Start"
+          aria-label={t("start.button")}
           aria-expanded={startOpen}
           onClick={toggleStart}
           className="flex cursor-pointer items-center gap-2 rounded-md px-1 py-0.5 hover:bg-white/40"

@@ -25,9 +25,9 @@ const hrefs = (win) =>
     .getAllByRole("link")
     .map((a) => a.getAttribute("href"));
 
-describe("Portfolio (projects) window", () => {
+describe("Projects window", () => {
   it("lists every project with tech tags", () => {
-    const win = openApp("Portfolio");
+    const win = openApp("Projects");
     for (const project of projects) {
       expect(within(win).getByRole("heading", { name: project.title })).toBeTruthy();
     }
@@ -35,7 +35,7 @@ describe("Portfolio (projects) window", () => {
   });
 
   it("links out to code and demos that exist, safely", () => {
-    const win = openApp("Portfolio");
+    const win = openApp("Projects");
     const links = within(win).getAllByRole("link");
     const expected = projects.flatMap((p) => [p.github, p.live]).filter(Boolean);
 

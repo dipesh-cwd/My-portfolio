@@ -5,9 +5,11 @@
  * - The component rendered inside each window lives in `src/windows/registry.js`.
  *
  * Fields
- *   title          Name shown in the dock tooltip and the default window title.
- *   windowTitle    Optional fancy title shown in the window's title bar.
- *   getTitle(data) Optional dynamic title (e.g. the image being viewed). Wins over windowTitle.
+ *   titleKey       Translation key (src/i18n/translations.js) for the dock tooltip and the
+ *                  default window title. Resolve it with useTranslation(): t(APPS[key].titleKey).
+ *   windowTitle    Optional fancy title shown in the window's title bar (kept as flavor text,
+ *                  not translated — a fake file path reads the same in every language).
+ *   getTitle(data, t)  Optional dynamic title (e.g. the image being viewed). Wins over windowTitle.
  *   icon           File in /public used for the dock icon.
  *   width/height   Default window size in px.
  *   minWidth/minHeight  Smallest size the user can resize to.
@@ -15,8 +17,8 @@
  *                  false = one window per app; opening again just focuses it.
  */
 export const APPS = {
-  portfolio: {
-    title: "Portfolio",
+  projects: {
+    titleKey: "apps.projects",
     icon: "portfolio.png",
     width: 760,
     height: 520,
@@ -24,7 +26,7 @@ export const APPS = {
     minHeight: 360,
   },
   photos: {
-    title: "Gallery",
+    titleKey: "apps.photos",
     windowTitle: "C:\\Users\\dipesh\\gallery",
     icon: "gallery2.png",
     width: 650,
@@ -33,7 +35,7 @@ export const APPS = {
     minHeight: 360,
   },
   contact: {
-    title: "Contact",
+    titleKey: "apps.contact",
     icon: "contact.png",
     width: 560,
     height: 540,
@@ -41,7 +43,7 @@ export const APPS = {
     minHeight: 460,
   },
   skill: {
-    title: "Skill",
+    titleKey: "apps.skill",
     windowTitle: "C:\\Users\\dipesh\\TechStack",
     icon: "cmd.png",
     width: 650,
@@ -50,7 +52,7 @@ export const APPS = {
     minHeight: 360,
   },
   education: {
-    title: "Education",
+    titleKey: "apps.education",
     icon: "education.png",
     width: 620,
     height: 440,
@@ -58,7 +60,7 @@ export const APPS = {
     minHeight: 300,
   },
   cv: {
-    title: "CV",
+    titleKey: "apps.cv",
     icon: "cv.png",
     width: 680,
     height: 580,
@@ -66,19 +68,35 @@ export const APPS = {
     minHeight: 400,
   },
   archive: {
-    title: "Archive",
+    titleKey: "apps.archive",
     icon: "archive.png",
     width: 620,
     height: 440,
     minWidth: 420,
     minHeight: 300,
   },
+  me: {
+    titleKey: "apps.me",
+    icon: "me.png",
+    width: 700,
+    height: 540,
+    minWidth: 460,
+    minHeight: 380,
+  },
+  settings: {
+    titleKey: "apps.settings",
+    icon: "setting.png",
+    width: 560,
+    height: 520,
+    minWidth: 420,
+    minHeight: 420,
+  },
 
   // Not in the dock: opened by the gallery, one window per image.
   viewer: {
-    title: "Image Viewer",
+    titleKey: "apps.viewer",
     icon: "gallery2.png",
-    getTitle: (data) => data?.images?.[data.index]?.name ?? "Image Viewer",
+    getTitle: (data, t) => data?.images?.[data.index]?.name ?? t("apps.viewer"),
     width: 700,
     height: 500,
     minWidth: 360,
@@ -88,13 +106,33 @@ export const APPS = {
 };
 
 /** Order of the apps in the dock. */
-export const DOCK_APPS = ["portfolio", "photos", "contact", "skill", "education", "cv", "archive"];
+export const DOCK_APPS = [
+  "projects",
+  "photos",
+  "contact",
+  "skill",
+  "education",
+  "cv",
+  "archive",
+  "me",
+  "settings",
+];
 
 export const DEFAULT_MIN_WIDTH = 400;
 export const DEFAULT_MIN_HEIGHT = 300;
 
-export const getWindowTitle = (appKey, data) => {
+/**
+ * Resolve a window's title. Needs a translator (from useTranslation()) since titles are
+ * language-dependent; call this from inside a component, not from the store.
+ */
+export const getWindowTitle = (appKey, data, t) => {
   const app = APPS[appKey];
   if (!app) return "";
-  return app.getTitle?.(data) ?? app.windowTitle ?? app.title;
+  // `app.title` (a literal string) is supported too, so ad-hoc apps in tests don't need a
+  // translation key.
+  return (
+    app.getTitle?.(data, t) ??
+    app.windowTitle ??
+    (app.titleKey ? t(app.titleKey) : (app.title ?? ""))
+  );
 };

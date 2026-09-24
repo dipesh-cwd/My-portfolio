@@ -1,5 +1,6 @@
 import { cleanup } from "@testing-library/react";
 import { afterEach, beforeEach } from "vitest";
+import { defaultPreferences, usePreferencesStore } from "../store/preferencesStore.js";
 import { createInitialUiState, useUiStore } from "../store/uiStore.js";
 import { createInitialState, useWindowStore } from "../store/windowStore.js";
 
@@ -20,7 +21,10 @@ beforeEach(() => {
   window.innerHeight = 800;
   useWindowStore.setState(createInitialState());
   useUiStore.setState(createInitialUiState());
+  usePreferencesStore.setState({ ...defaultPreferences });
+  document.documentElement.removeAttribute("data-theme");
   sessionStorage.clear();
+  localStorage.clear();
 });
 
 afterEach(() => {

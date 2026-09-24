@@ -3,6 +3,36 @@
 :root {
   /* Keep in sync with TASKBAR_HEIGHT in src/config/layout.js */
   --taskbar-h: 40px;
+
+  /* Theme tokens (dark is the default; see [data-theme="light"] below).
+     Set by ThemeEffect.jsx via document.documentElement.dataset.theme, from Settings. */
+  --win-bg: #000000;
+  --win-border: #1f2937; /* gray-800 */
+  --titlebar-bg: #1f1f1f;
+  --titlebar-text: #ffffff;
+  --content-bg: #1e1e1e;
+  --content-text: #e5e7eb; /* gray-200 */
+  --muted-text: #9ca3af; /* gray-400 */
+  --accent-text: #93c5fd; /* blue-300 */
+  --card-bg: #252526;
+  --card-border: #374151; /* gray-700 */
+  --input-bg: #2a2a2a;
+  --input-border: #4b5563; /* gray-600 */
+}
+
+[data-theme="light"] {
+  --win-bg: #ffffff;
+  --win-border: #d1d5db; /* gray-300 */
+  --titlebar-bg: #f1f5f9; /* slate-100 */
+  --titlebar-text: #111827; /* gray-900 */
+  --content-bg: #f9fafb; /* gray-50 */
+  --content-text: #1f2937; /* gray-800 */
+  --muted-text: #6b7280; /* gray-500 */
+  --accent-text: #2563eb; /* blue-600 */
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb; /* gray-200 */
+  --input-bg: #ffffff;
+  --input-border: #d1d5db; /* gray-300 */
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -20,15 +50,32 @@ body {
   overflow: hidden;
   margin: 0;
   padding: 0;
-  background-image: url("/body_img.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: #1e1e1e;
+}
+
+/* The wallpaper is only used by the desktop UI, so phones never download it. */
+@media (min-width: 768px) {
+  html,
+  body {
+    background-image: url("/body_img.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+/* Visible keyboard focus everywhere (mouse clicks don't trigger this). It lives in the base
+   layer so Tailwind's outline-* utilities can still override it where needed. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+  }
 }
 
 @font-face {
   font-family: "Georama";
-  src: url("/fonts/Georama-VariableFont_wdth,wght.ttf") format("truetype");
+  src: url("/fonts/Georama-Variable.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;

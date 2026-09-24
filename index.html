@@ -2,17 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/web_logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/web_logo.png" />
+    <meta name="theme-color" content="#1e1e1e" />
+
+    <!-- Search / share text: edit these to match src/data/profile.js -->
+    <title>Dipesh's Portfolio</title>
     <meta
       name="description"
-      content="Dipesh's portfolio: a desktop-style showcase of projects, skills and photos."
+      content="Dipesh's portfolio: a desktop-style showcase of MERN stack projects, skills and photos."
     />
-    <meta name="theme-color" content="#1e1e1e" />
-    <title>Dipesh's Portfolio</title>
+
+    <!-- Social previews. __SITE_URL__ is filled in at build time (see vite-plugin-site-meta.js);
+         tags that need it are dropped if the site URL isn't known. -->
+    <link rel="canonical" href="__SITE_URL__/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dipesh's Portfolio" />
+    <meta property="og:title" content="Dipesh's Portfolio" />
+    <meta
+      property="og:description"
+      content="A desktop-style showcase of MERN stack projects, skills and photos."
+    />
+    <meta property="og:url" content="__SITE_URL__/" />
+    <meta property="og:image" content="__SITE_URL__/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dipesh's Portfolio" />
+    <meta
+      name="twitter:description"
+      content="A desktop-style showcase of MERN stack projects, skills and photos."
+    />
+    <meta name="twitter:image" content="__SITE_URL__/og-image.png" />
+
+    <!-- Start loading the big assets early. Desktop only: the phone layout doesn't use them. -->
+    <link
+      rel="preload"
+      href="/fonts/Georama-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      media="(min-width: 768px)"
+    />
+    <link rel="preload" href="/body_img.jpg" as="image" media="(min-width: 768px)" />
   </head>
   <body>
     <div id="root"></div>
+    <noscript>This portfolio needs JavaScript to run. Please enable it and reload.</noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

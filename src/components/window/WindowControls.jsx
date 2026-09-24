@@ -1,10 +1,12 @@
 import { Copy, Minus, Square, X } from "lucide-react";
+import { useTranslation } from "../../i18n/index.js";
 import { useWindowStore } from "../../store/windowStore.js";
 
 const buttonClass =
-  "flex h-6 w-10 cursor-pointer items-center justify-center rounded-sm text-gray-300 hover:bg-[#2a2a2a]";
+  "flex h-6 w-10 cursor-pointer items-center justify-center rounded-sm text-[var(--titlebar-text)] opacity-80 hover:bg-black/10 hover:opacity-100";
 
 const WindowControls = ({ id }) => {
+  const t = useTranslation();
   const isMaximized = useWindowStore((s) => s.windows[id]?.isMaximized ?? false);
   const minimizeWindow = useWindowStore((s) => s.minimizeWindow);
   const toggleMaximize = useWindowStore((s) => s.toggleMaximize);
@@ -14,7 +16,7 @@ const WindowControls = ({ id }) => {
     <div className="flex items-center space-x-1">
       <button
         type="button"
-        aria-label="Minimize"
+        aria-label={t("window.minimize")}
         className={buttonClass}
         onClick={() => minimizeWindow(id)}
       >
@@ -22,7 +24,7 @@ const WindowControls = ({ id }) => {
       </button>
       <button
         type="button"
-        aria-label={isMaximized ? "Restore" : "Maximize"}
+        aria-label={isMaximized ? t("window.restore") : t("window.maximize")}
         className={buttonClass}
         onClick={() => toggleMaximize(id)}
       >
@@ -30,7 +32,7 @@ const WindowControls = ({ id }) => {
       </button>
       <button
         type="button"
-        aria-label="Close"
+        aria-label={t("window.close")}
         className="flex h-6 w-10 cursor-pointer items-center justify-center rounded-sm bg-red-600 text-white hover:bg-red-700"
         onClick={() => closeWindow(id)}
       >

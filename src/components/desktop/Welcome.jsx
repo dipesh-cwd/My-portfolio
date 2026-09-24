@@ -1,15 +1,17 @@
-import LiquidMagneticTitle from "./LiquidMagneticTitle";
-import React, { useRef } from "react";
-import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
+import { useRef } from "react";
+import { useTranslation } from "../../i18n/index.js";
+import { usePreferencesStore } from "../../store/preferencesStore.js";
+import LiquidMagneticTitle from "./LiquidMagneticTitle.jsx";
 
 const FONT_WEIGHTS = {
   title: { MIN: 400, MAX: 900, default: 400 },
   subtitle: { MIN: 100, MAX: 900, default: 100 },
 };
 
-const renderText = (text, className, baseWeight = 400) => {
-  return [...text].map((char, i) => (
+const renderText = (text, className, baseWeight = 400) =>
+  [...text].map((char, i) => (
     <span
       key={i}
       className={className + " char"}
@@ -22,7 +24,6 @@ const renderText = (text, className, baseWeight = 400) => {
       {char === " " ? "\u00A0" : char}
     </span>
   ));
-};
 
 const setupTextHover = (container, type) => {
   if (!container) return () => {};
@@ -56,13 +57,9 @@ const setupTextHover = (container, type) => {
 
       letters.forEach((letter) => {
         const rect = letter.getBoundingClientRect();
-
         const letterCenter = rect.left - containerLeft + rect.width / 2;
-
         const distance = Math.abs(mouseX - letterCenter);
-
         const intensity = Math.exp(-(distance ** 2) / (containerWidth * 10));
-
         const newWeight = Math.round(min + (max - min) * intensity);
         animateLetter(letter, newWeight, 0.18);
       });
@@ -87,43 +84,51 @@ const setupTextHover = (container, type) => {
   };
 };
 
+/**
+ * The desktop welcome screen: a greeting plus the animated "Portfolio" title.
+ * Hidden entirely when the visitor turns off "Show welcome screen" in Settings; the letter
+ * hover/magnetic effects are separately skipped when "Animate the title" is off.
+ */
 const Welcome = () => {
+  const t = useTranslation();
+  const welcomeVisible = usePreferencesStore((s) => s.welcomeVisible);
+  const welcomeAnimation = usePreferencesStore((s) => s.welcomeAnimation);
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
 
-  useGSAP(() => {
-    const titleCleanup = titleRef.current && setupTextHover(titleRef.current, "title");
-    const subtitleCleanup = subtitleRef.current && setupTextHover(subtitleRef.current, "subtitle");
+  useGSAP(
+    () => {
+      if (!welcomeAnimation) return;
+      const titleCleanup = titleRef.current && setupTextHover(titleRef.current, "title");
+      const subtitleCleanup =
+        subtitleRef.current && setupTextHover(subtitleRef.current, "subtitle");
 
-    return () => {
-      titleCleanup && titleCleanup();
-      subtitleCleanup && subtitleCleanup();
-    };
-  }, []);
+      return () => {
+        titleCleanup && titleCleanup();
+        subtitleCleanup && subtitleCleanup();
+      };
+    },
+    { dependencies: [welcomeAnimation] }
+  );
+
+  if (!welcomeVisible) return null;
 
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen text-center px-4 text-white">
+    <main className="flex flex-col items-center justify-center min-h-screen text-center px-4 text-white">
       <div ref={subtitleRef} className="cursor-pointer text-georama text-3xl md:text-4xl ">
-        {renderText(
-          "Hallo, ich bin Dipesh! Willkommen zu meinem",
-          "text-georama",
-          FONT_WEIGHTS.subtitle.default
-        )}
+        {renderText(t("welcome.greeting"), "text-georama", FONT_WEIGHTS.subtitle.default)}
       </div>
 
       <h1 ref={titleRef} className="mt-6 cursor-pointer text-georama  text-6xl md:text-9xl italic">
         <LiquidMagneticTitle
-          text="Portfolio"
+          text={t("welcome.title")}
           intensity={1.8}
           radius={null}
           className="text-georama"
+          animate={welcomeAnimation}
         />
       </h1>
-
-      <div className="mt-6 block md:hidden">
-        <p>This Portfolio is designed for desktop and tab only.</p>
-      </div>
-    </section>
+    </main>
   );
 };
 

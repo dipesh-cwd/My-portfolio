@@ -17,3 +17,6 @@ export const Z_LIMIT = 5000;
 
 /** Margin kept around a new window when the viewport is smaller than the window. */
 export const VIEWPORT_MARGIN = 16;
+
+/** Below this width the desktop UI is replaced by a simple scrolling page (see MobileSite). */
+export const MOBILE_QUERY = "(max-width: 767px)";

@@ -5,12 +5,13 @@ const defaultProps = {
   intensity: 1.6,
   radius: null,
   className: "",
+  animate: true,
 };
 
 const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
 const LiquidMagneticTitle = (props) => {
-  const { text, intensity, radius, className } = { ...defaultProps, ...props };
+  const { text, intensity, radius, className, animate } = { ...defaultProps, ...props };
   const containerRef = useRef(null);
   const lettersRef = useRef([]);
   const stateRef = useRef({
@@ -24,7 +25,7 @@ const LiquidMagneticTitle = (props) => {
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || !animate) return; // static text: skip the whole mouse-physics setup
     const state = stateRef.current;
 
     const spans = Array.from(container.querySelectorAll("span.lm-char"));
@@ -190,8 +191,14 @@ const LiquidMagneticTitle = (props) => {
       container.removeEventListener("touchend", onLeave);
       window.removeEventListener("resize", onResize);
       if (state.rafId) cancelAnimationFrame(state.rafId);
+      // Reset in case animation is toggled off mid-gesture, so letters don't stay offset.
+      spans.forEach((el) => {
+        el.style.transform = "";
+        el.style.willChange = "";
+        el.style.fontVariationSettings = `"wght" 100`;
+      });
     };
-  }, [text, intensity, radius]);
+  }, [text, intensity, radius, animate]);
 
   return (
     <div

@@ -1,17 +1,18 @@
 import { Github, Linkedin, Mail } from "lucide-react";
 import { useState } from "react";
 import { profile } from "../data/profile.js";
+import { useTranslation } from "../i18n/index.js";
 import { sendContact, validateContact } from "../lib/contact.js";
 import { WindowPage } from "./ui.jsx";
 
 const EMPTY = { name: "", email: "", message: "" };
 
 const inputClass =
-  "w-full rounded-md border border-gray-600 bg-[#2a2a2a] px-3 py-2 text-sm text-white outline-none placeholder:text-gray-500 focus:border-blue-400";
+  "w-full rounded-md border border-[var(--input-border)] bg-[var(--input-bg)] px-3 py-2 text-sm text-[var(--content-text)] outline-none placeholder:text-[var(--muted-text)] focus:border-blue-400";
 
 const Field = ({ label, name, error, children }) => (
   <div>
-    <label htmlFor={`contact-${name}`} className="mb-1 block text-sm text-gray-300">
+    <label htmlFor={`contact-${name}`} className="mb-1 block text-sm text-[var(--content-text)]">
       {label}
     </label>
     {children}
@@ -23,16 +24,32 @@ const Field = ({ label, name, error, children }) => (
   </div>
 );
 
-const links = [
-  { label: "Email", href: `mailto:${profile.email}`, text: profile.email, Icon: Mail },
-  { label: "GitHub", href: profile.github, text: "GitHub", Icon: Github },
-  { label: "LinkedIn", href: profile.linkedin, text: "LinkedIn", Icon: Linkedin },
-].filter((link) => link.href);
-
 const Contact = () => {
+  const t = useTranslation();
   const [values, setValues] = useState(EMPTY);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState({ state: "idle" });
+
+  const links = [
+    {
+      label: t("contact.linkEmail"),
+      href: `mailto:${profile.email}`,
+      text: profile.email,
+      Icon: Mail,
+    },
+    {
+      label: t("contact.linkGithub"),
+      href: profile.github,
+      text: t("contact.linkGithub"),
+      Icon: Github,
+    },
+    {
+      label: t("contact.linkLinkedin"),
+      href: profile.linkedin,
+      text: t("contact.linkLinkedin"),
+      Icon: Linkedin,
+    },
+  ].filter((link) => link.href);
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -60,7 +77,7 @@ const Contact = () => {
   const sending = status.state === "sending";
 
   return (
-    <WindowPage title="Contact" subtitle="Have a project or question? Send me a message.">
+    <WindowPage title={t("apps.contact")} subtitle={t("contact.subtitle")}>
       <ul className="mb-5 flex flex-wrap gap-x-5 gap-y-2 text-sm">
         {links.map(({ label, href, text, Icon }) => (
           <li key={label}>
@@ -68,7 +85,7 @@ const Contact = () => {
               href={href}
               target={href.startsWith("mailto:") ? undefined : "_blank"}
               rel="noreferrer noopener"
-              className="inline-flex items-center gap-2 text-blue-300 hover:underline"
+              className="inline-flex items-center gap-2 text-[var(--accent-text)] hover:underline"
             >
               <Icon size={15} aria-hidden="true" />
               {text}
@@ -78,7 +95,7 @@ const Contact = () => {
       </ul>
 
       <form onSubmit={onSubmit} noValidate className="space-y-4">
-        <Field label="Name" name="name" error={errors.name}>
+        <Field label={t("contact.name")} name="name" error={errors.name && t(errors.name)}>
           <input
             id="contact-name"
             name="name"
@@ -90,7 +107,7 @@ const Contact = () => {
           />
         </Field>
 
-        <Field label="Email" name="email" error={errors.email}>
+        <Field label={t("contact.email")} name="email" error={errors.email && t(errors.email)}>
           <input
             id="contact-email"
             name="email"
@@ -103,7 +120,11 @@ const Contact = () => {
           />
         </Field>
 
-        <Field label="Message" name="message" error={errors.message}>
+        <Field
+          label={t("contact.message")}
+          name="message"
+          error={errors.message && t(errors.message)}
+        >
           <textarea
             id="contact-message"
             name="message"
@@ -121,21 +142,17 @@ const Contact = () => {
             disabled={sending}
             className="cursor-pointer rounded-md bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {sending ? "Sending..." : "Send message"}
+            {sending ? t("contact.sending") : t("contact.send")}
           </button>
 
           <p role="status" className="text-sm">
             {status.state === "sent" && status.mode === "api" && (
-              <span className="text-green-400">Thanks! Your message was sent.</span>
+              <span className="text-green-400">{t("contact.sentApi")}</span>
             )}
             {status.state === "sent" && status.mode === "mailto" && (
-              <span className="text-green-400">
-                Your email app should open with the message ready to send.
-              </span>
+              <span className="text-green-400">{t("contact.sentMailto")}</span>
             )}
-            {status.state === "error" && (
-              <span className="text-red-400">Something went wrong. Please try again.</span>
-            )}
+            {status.state === "error" && <span className="text-red-400">{t("contact.error")}</span>}
           </p>
         </div>
       </form>

@@ -3,7 +3,17 @@ import { describe, expect, it } from "vitest";
 import App from "../../App.jsx";
 import { useWindowStore } from "../../store/windowStore.js";
 
-const ALL_APPS = ["Portfolio", "Gallery", "Contact", "Skill", "Education", "CV", "Archive"];
+const ALL_APPS = [
+  "Projects",
+  "Gallery",
+  "Contact",
+  "Skill",
+  "Education",
+  "CV",
+  "Archive",
+  "Me",
+  "Settings",
+];
 
 const startButton = () => screen.getByRole("button", { name: "Start" });
 const startMenu = () => screen.queryByRole("dialog", { name: "Start menu" });

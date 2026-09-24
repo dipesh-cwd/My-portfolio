@@ -15,8 +15,18 @@ describe("desktop", () => {
   it("renders the welcome screen and the dock with every app", () => {
     render(<App />);
     // The greeting is split into one <span> per letter, so check the combined text.
-    expect(document.body.textContent).toContain("Willkommen");
-    for (const name of ["Portfolio", "Gallery", "Contact", "Skill", "Education", "CV", "Archive"]) {
+    expect(document.body.textContent).toContain("Welcome");
+    for (const name of [
+      "Projects",
+      "Gallery",
+      "Contact",
+      "Skill",
+      "Education",
+      "CV",
+      "Archive",
+      "Me",
+      "Settings",
+    ]) {
       expect(dockButton(name)).toBeTruthy();
     }
     expect(screen.queryAllByRole("dialog")).toHaveLength(0);

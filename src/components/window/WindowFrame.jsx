@@ -1,8 +1,10 @@
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { getWindowTitle } from "../../config/apps.js";
+import { useTranslation } from "../../i18n/index.js";
 import { prefersReducedMotion } from "../../lib/motion.js";
+import { useUiStore } from "../../store/uiStore.js";
 import { useWindowStore } from "../../store/windowStore.js";
 import { WINDOW_COMPONENTS } from "../../windows/registry.js";
 import Placeholder from "../../windows/Placeholder.jsx";
@@ -29,9 +31,28 @@ const WindowFrame = ({ id }) => {
   const win = useWindowStore((s) => s.windows[id]);
   const focusWindow = useWindowStore((s) => s.focusWindow);
   const toggleMaximize = useWindowStore((s) => s.toggleMaximize);
+  const closeWindow = useWindowStore((s) => s.closeWindow);
 
   const frameRef = useRef(null);
   const { startMove, startResize } = useWindowGestures(id, frameRef);
+  const t = useTranslation();
+
+  // Move keyboard focus into a newly opened window (unless its content already took it,
+  // like the image viewer does), so keyboard and screen-reader users land in it.
+  useEffect(() => {
+    const el = frameRef.current;
+    if (el && !el.contains(document.activeElement)) el.focus({ preventScroll: true });
+  }, []);
+
+  // Escape closes the focused window, except while typing (don't lose a half-written message)
+  // or while a taskbar popup is open (Escape should close that first).
+  const onKeyDown = (event) => {
+    if (event.key !== "Escape" || event.defaultPrevented) return;
+    if (event.target.closest("input, textarea, select, [contenteditable='true']")) return;
+    const { startOpen, panelOpen } = useUiStore.getState();
+    if (startOpen || panelOpen) return;
+    closeWindow(id);
+  };
 
   // Small "pop in" when a window opens (skipped for reduced-motion visitors).
   useGSAP(
@@ -52,7 +73,7 @@ const WindowFrame = ({ id }) => {
   if (!win) return null;
 
   const Content = WINDOW_COMPONENTS[win.appKey] ?? Placeholder;
-  const title = getWindowTitle(win.appKey, win.data);
+  const title = getWindowTitle(win.appKey, win.data, t);
 
   // A maximized window is sized with CSS (not stored numbers) so it always fits the viewport.
   const geometry = win.isMaximized
@@ -64,7 +85,8 @@ const WindowFrame = ({ id }) => {
       ref={frameRef}
       role="dialog"
       aria-label={title}
-      className={`fixed flex flex-col overflow-hidden border border-gray-800 bg-black font-mono text-white shadow-2xl ${
+      tabIndex={-1}
+      className={`fixed flex flex-col overflow-hidden border border-[var(--win-border)] bg-[var(--win-bg)] font-mono text-[var(--content-text)] shadow-2xl outline-none ${
         win.isMaximized ? "rounded-none" : "rounded-md"
       }`}
       style={{
@@ -73,6 +95,7 @@ const WindowFrame = ({ id }) => {
         display: win.isMinimized ? "none" : undefined,
       }}
       onPointerDownCapture={() => focusWindow(id)}
+      onKeyDown={onKeyDown}
     >
       {!win.isMaximized &&
         RESIZE_DIRECTIONS.map((dir) => (
@@ -87,7 +110,7 @@ const WindowFrame = ({ id }) => {
 
       <div
         data-drag-handle
-        className="flex shrink-0 cursor-grab select-none items-center justify-between border-b border-gray-700 bg-[#1f1f1f] px-4 py-2 active:cursor-grabbing"
+        className="flex shrink-0 cursor-grab select-none items-center justify-between border-b border-[var(--win-border)] bg-[var(--titlebar-bg)] px-4 py-2 text-[var(--titlebar-text)] active:cursor-grabbing"
         style={{ touchAction: "none" }}
         onPointerDown={startMove}
         onDoubleClick={(event) => {
@@ -95,7 +118,7 @@ const WindowFrame = ({ id }) => {
           toggleMaximize(id);
         }}
       >
-        <h2 className="truncate text-sm">{title}</h2>
+        <span className="truncate text-sm">{title}</span>
         <WindowControls id={id} />
       </div>
 

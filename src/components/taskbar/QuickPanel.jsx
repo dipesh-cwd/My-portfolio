@@ -1,5 +1,6 @@
 import { ChevronUp, X } from "lucide-react";
-import { getWindowTitle, APPS } from "../../config/apps.js";
+import { APPS, getWindowTitle } from "../../config/apps.js";
+import { useTranslation } from "../../i18n/index.js";
 import { asset } from "../../lib/assets.js";
 import { useUiStore } from "../../store/uiStore.js";
 import { useWindowStore } from "../../store/windowStore.js";
@@ -13,6 +14,7 @@ const actionClass =
  * focus can't wander into it while hidden.
  */
 const QuickPanel = ({ panelRef }) => {
+  const t = useTranslation();
   const open = useUiStore((s) => s.panelOpen);
   const togglePanel = useUiStore((s) => s.togglePanel);
   const closeMenus = useUiStore((s) => s.closeMenus);
@@ -34,8 +36,9 @@ const QuickPanel = ({ panelRef }) => {
   };
 
   return (
-    <div
+    <section
       ref={panelRef}
+      aria-label={t("panel.switcherLabel")}
       className={`fixed left-0 z-[8999] w-full bg-white/50 backdrop-blur-3xl transition-all duration-500 ease-in-out ${
         open ? "translate-y-0" : "translate-y-full"
       }`}
@@ -43,7 +46,7 @@ const QuickPanel = ({ panelRef }) => {
     >
       <button
         type="button"
-        aria-label={open ? "Collapse panel" : "Expand panel"}
+        aria-label={open ? t("panel.collapse") : t("panel.expand")}
         aria-expanded={open}
         onClick={togglePanel}
         className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full cursor-pointer rounded-t-xl bg-white/50 px-5 backdrop-blur-3xl transition-all duration-200 ease-in-out select-none hover:scale-105 hover:bg-white/65"
@@ -58,7 +61,7 @@ const QuickPanel = ({ panelRef }) => {
 
       <div inert={!open} className="mx-auto flex h-full max-w-2xl flex-col gap-3 p-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-black/80">Open windows</h2>
+          <h2 className="text-sm font-semibold text-black/80">{t("panel.openWindows")}</h2>
           <div className="flex gap-2">
             <button
               type="button"
@@ -69,7 +72,7 @@ const QuickPanel = ({ panelRef }) => {
                 closeMenus();
               }}
             >
-              Show desktop
+              {t("panel.showDesktop")}
             </button>
             <button
               type="button"
@@ -80,17 +83,17 @@ const QuickPanel = ({ panelRef }) => {
                 closeMenus();
               }}
             >
-              Close all
+              {t("panel.closeAll")}
             </button>
           </div>
         </div>
 
         {list.length === 0 ? (
-          <p className="text-sm text-black/60">No windows open. Pick an app from the dock.</p>
+          <p className="text-sm text-black/60">{t("panel.empty")}</p>
         ) : (
           <ul className="no-scrollbar min-h-0 flex-1 space-y-1 overflow-auto">
             {list.map((win) => {
-              const title = getWindowTitle(win.appKey, win.data);
+              const title = getWindowTitle(win.appKey, win.data, t);
               return (
                 <li key={win.id} className="flex items-center gap-1">
                   <button
@@ -104,11 +107,13 @@ const QuickPanel = ({ panelRef }) => {
                       className="h-5 w-5 shrink-0 object-contain"
                     />
                     <span className="truncate">{title}</span>
-                    {win.isMinimized && <span className="text-xs text-black/50">minimized</span>}
+                    {win.isMinimized && (
+                      <span className="text-xs text-black/50">{t("panel.minimized")}</span>
+                    )}
                   </button>
                   <button
                     type="button"
-                    aria-label={`Close ${title}`}
+                    aria-label={t("panel.closeWindow", { title })}
                     onClick={() => closeWindow(win.id)}
                     className="cursor-pointer rounded-md p-1.5 text-black/60 hover:bg-black/10 hover:text-black"
                   >
@@ -120,7 +125,7 @@ const QuickPanel = ({ panelRef }) => {
           </ul>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

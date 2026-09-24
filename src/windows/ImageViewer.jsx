@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "../i18n/index.js";
 import { asset } from "../lib/assets.js";
 import { useWindowStore } from "../store/windowStore.js";
 
@@ -8,6 +9,7 @@ const navButtonClass =
 
 /** Content of an "image viewer" window. `data` is { images, index }. */
 const ImageViewer = ({ windowId, data }) => {
+  const t = useTranslation();
   const updateWindowData = useWindowStore((s) => s.updateWindowData);
   const rootRef = useRef(null);
 
@@ -21,7 +23,7 @@ const ImageViewer = ({ windowId, data }) => {
   }, []);
 
   if (!image) {
-    return <p className="p-4 text-sm text-gray-400">No image to show.</p>;
+    return <p className="p-4 text-sm text-gray-400">{t("gallery.empty")}</p>;
   }
 
   const goTo = (next) => {
@@ -51,7 +53,7 @@ const ImageViewer = ({ windowId, data }) => {
         <>
           <button
             type="button"
-            aria-label="Previous image"
+            aria-label={t("gallery.prev")}
             className={`${navButtonClass} left-2`}
             onClick={() => goTo(index - 1)}
           >
@@ -59,7 +61,7 @@ const ImageViewer = ({ windowId, data }) => {
           </button>
           <button
             type="button"
-            aria-label="Next image"
+            aria-label={t("gallery.next")}
             className={`${navButtonClass} right-2`}
             onClick={() => goTo(index + 1)}
           >

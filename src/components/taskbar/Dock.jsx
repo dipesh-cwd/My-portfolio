@@ -4,10 +4,12 @@ import { useRef } from "react";
 import { Tooltip } from "react-tooltip";
 import { useShallow } from "zustand/react/shallow";
 import { APPS, DOCK_APPS } from "../../config/apps.js";
+import { useTranslation } from "../../i18n/index.js";
 import { asset } from "../../lib/assets.js";
 import { useWindowStore } from "../../store/windowStore.js";
 
 const Dock = () => {
+  const t = useTranslation();
   const dockRef = useRef(null);
   const toggleApp = useWindowStore((s) => s.toggleApp);
   // Which apps currently have a window open (used for the little indicator dot).
@@ -58,7 +60,8 @@ const Dock = () => {
     <section id="dock">
       <div className="flex flex-row items-end justify-center gap-4" ref={dockRef}>
         {DOCK_APPS.map((appKey) => {
-          const { title, icon } = APPS[appKey];
+          const { titleKey, icon } = APPS[appKey];
+          const title = t(titleKey);
           const isOpen = openApps.includes(appKey);
 
           return (

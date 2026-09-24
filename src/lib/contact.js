@@ -2,12 +2,16 @@ import { profile } from "../data/profile.js";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/** Returns an object of field -> message. Empty object means the values are valid. */
+/**
+ * Returns an object of field -> i18n key (see "contact.err*" in src/i18n/translations.js).
+ * Empty object means the values are valid. Keys, not English text, so the caller can translate
+ * them into whichever language is selected.
+ */
 export const validateContact = ({ name, email, message }) => {
   const errors = {};
-  if (name.trim().length < 2) errors.name = "Please enter your name.";
-  if (!EMAIL_PATTERN.test(email.trim())) errors.email = "Please enter a valid email address.";
-  if (message.trim().length < 10) errors.message = "Please write at least 10 characters.";
+  if (name.trim().length < 2) errors.name = "contact.errName";
+  if (!EMAIL_PATTERN.test(email.trim())) errors.email = "contact.errEmail";
+  if (message.trim().length < 10) errors.message = "contact.errMessage";
   return errors;
 };
 
